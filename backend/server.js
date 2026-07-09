@@ -33,6 +33,9 @@ app.use(
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Lost & Found Backend Running");
+});
 // ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/otp", otpRoutes);
@@ -53,14 +56,15 @@ initSocket(server);
 
 const PORT = process.env.PORT || 5000;
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("MongoDB connected");
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 
-    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-    process.exit(1);
-  });
+  mongoose
+    .connect(process.env.MONGO_URL)
+    .then(() => {
+      console.log("MongoDB connected");
+    })
+    .catch((err) => {
+      console.error("MongoDB connection error:", err);
+    });
+});
