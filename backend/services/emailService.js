@@ -4,16 +4,18 @@ import nodemailer from "nodemailer";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS.replace(/\s/g, ""),
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
 export const sendOtpEmail = async (email, otp) => {
   await transporter.sendMail({
-    from: `"TMU Lost & Found" <${process.env.EMAIL_USER}>`,
+    from: `"TMU Lost & Found" <parassingh2111@gmail.com>`,
     to: email,
     subject: "Lost & Found OTP Verification",
     html: `
